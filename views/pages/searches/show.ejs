@@ -10,7 +10,13 @@
 
 <body>
   <% searchResults.forEach(item => { %>
+  <img src="<%= item.image %>"/>
+
   <p><%= item.title %></p>
+
+  <p><%= item.author %></p>
+ 
+  <p><%= item.description %></p>
   <% }) %>
 </body>
 
