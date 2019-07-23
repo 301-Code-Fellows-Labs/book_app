@@ -1,6 +1,14 @@
+@media only screen and (max-width: 767px) {
+    /* for mobile view */
+    
+
 body{
-    background-color: pink;
+    background-color: gray;
+    font: black;
+    font-family: 'Darker Grotesque', sans-serif;
 }
 h4{
     font-size: 3em;
+}
+
 }
