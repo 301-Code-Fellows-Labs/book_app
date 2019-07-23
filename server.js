@@ -52,5 +52,5 @@ function createSearch(request, response) {
   superagent.get(url)
     .then(apiResponse => apiResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
     .then(results => response.render('pages/searches/show', { searchResults: results }))
-    .catch(error => response.status(500).render('pages/error'));
+    .catch(error => error, response.status(500).render('pages/error'));
 }
