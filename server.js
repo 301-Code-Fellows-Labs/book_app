@@ -1,14 +1,12 @@
-'use strict';
-
 const express = require('express');
 const superagent = require('superagent');
 const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-app.use(express.urlencoded({ extended: true }));
-app.use('/public', express.static('public'));
-app.set('view engine', 'ejs');
+app.use(express.urlencoded({ extended: true })); // default clientused to send html forms
+app.use('/public', express.static('public')); // route to public folder with static files
+app.set('view engine', 'ejs'); // setting ejs as view engin for express app
 
 // API Routes
 // Renders the search form
@@ -29,11 +27,13 @@ function Book(info) {
   const placeholderImage = 'https://i.imgur.com/J5LVHEL.jpg';
   this.title = info.title;
   this.authors = info.authors;
+  this.description = info.description;
+  this.image = info.imageLinks.smallThumbnail || placeholderImage;
 }
 
 // Note that .ejs file extension is not required
 function newSearch(request, response) {
-  response.render('pages/index');
+  response.render('pages/index'); //looks in view folder for pages/index
 }
 
 // No API key required
@@ -49,6 +49,6 @@ function createSearch(request, response) {
 
   superagent.get(url)
     .then(apiResponse => apiResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
-    .then(results => response.render('pages/searches/show', { searchResults: results }));
-  // how will we handle errors?
+    .then(results => response.render('pages/searches/show', { searchResults: results }))
+    .catch(error => response.status(500).render('pages/error'));
 }
