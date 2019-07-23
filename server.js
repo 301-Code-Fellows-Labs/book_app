@@ -7,14 +7,17 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
+app.use('/public', express.static('public'));
 app.set('view engine', 'ejs');
 
 // API Routes
 // Renders the search form
 app.get('/', newSearch);
 
+
 // Creates a new search to the Google Books API
 app.post('/searches', createSearch);
+
 
 // Catch-all
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
