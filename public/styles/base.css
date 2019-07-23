@@ -1,14 +1,53 @@
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 550px) {
     /* for mobile view */
     
 
 body{
     background-color: gray;
+    display: flex; 
+    flex-direction: column;
     font: black;
     font-family: 'Darker Grotesque', sans-serif;
+    border: solid green 2px;
 }
+
 h4{
-    font-size: 3em;
+    /* font-size: 3em; */
+    border: solid red 2px;
+    height: 25px; 
+    width: vmax;
 }
+
+main {
+    border: solid pink 2px;
+  }
+
+  
+  form {
+    border: solid orange 2px;
+  }
+  
+  fieldset {
+    border: solid yellow 2px;
+    margin: 10px;
+    padding: 5px; 
+    background: lightgray;
+    border-radius: 15px; 
+    height: 25px;
+  }
+
+  input {
+      border: solid purple 2px; 
+
+  }
+
+  button {
+      border: solid 2px fuchsia;
+      border-radius: 15px;
+      /* background: black; */
+      font: white; 
+      height: 25px; 
+  }
+  
 
 }
