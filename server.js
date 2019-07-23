@@ -27,12 +27,11 @@ app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 // HELPER FUNCTIONS
 function Book(info) {
   const placeholderImage = 'https://i.imgur.com/J5LVHEL.jpg';
-  this.title = info.title;
-  this.authors = info.authors;
-  this.description = info.description;
-  this.image = info.imageLinks.smallThumbnail || placeholderImage;
+  this.title = info.title ? info.title : 'no title';
+  this.authors = info.authors ? info.authors : 'no author';
+  this.description = info.description ? info.description : 'no description';
+  this.image = info.imageLinks ? info.imageLinks.smallThumbnail : placeholderImage;
 }
-
 // Note that .ejs file extension is not required
 function newSearch(request, response) {
   response.render('pages/index'); //looks in view folder for pages/index
@@ -52,5 +51,5 @@ function createSearch(request, response) {
   superagent.get(url)
     .then(apiResponse => apiResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
     .then(results => response.render('pages/searches/show', { searchResults: results }))
-    .catch(error => error, response.status(500).render('pages/error'));
+    .catch(err => response.status(500).render('pages/error'), {err: 'oops'});
 }
