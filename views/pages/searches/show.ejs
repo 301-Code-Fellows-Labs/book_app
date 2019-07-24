@@ -11,14 +11,16 @@
         </header>
 <main>
   <% searchResults.forEach(item => { %>
-  <img src="<%= item.image %>"/>
+    <div class="book-results">
+      <img src="<%= item.image %>"/>
 
-  <p><%= item.title %></p>
+      <p><%= item.title %></p>
 
-  <p><%= item.author %></p>
- 
-  <p><%= item.description %></p>
-  <% }) %>
+      <p><%= item.author %></p>
+    
+      <p><%= item.description %></p>
+    </div>
+      <% }) %>
 </main>
 </body>
 

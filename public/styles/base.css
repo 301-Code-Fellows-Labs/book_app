@@ -10,11 +10,6 @@ body{
     font-family: 'Darker Grotesque', sans-serif;
  }
 
-h4{
-    /* font-size: 3em; */
-    height: 25px; 
-    /* width: vmax; */
-}
 
 main {
     background: gray; 
@@ -25,7 +20,8 @@ main {
 
   
   form {
-    border: solid orange 2px;
+    background: lightgray;
+    border: solid gray 10px;
   }
   
   fieldset {
@@ -60,12 +56,31 @@ main {
   }
 
   .book{
-      margin: 8px;
-      padding: 8px;
-      /* border: solid orange 2px; */
+      padding: 15px;
+      margin: auto;
       background-color: lightgrey;
+      border: 2px solid gray;
   }
   
+  div {
+      background-color: gray;
+      width: 70%;
+  }
+ 
+  .navigation {
+    background-color: lightgrey;
+    width: 70%;
+    margin: auto;
+    border: solid gray 5px;
+    box-sizing: border-box;
+}
+
+.book-results{
+    border: 10px solid gray;
+    background-color: lightgray;
+    margin: auto;
+    padding: 10px;
+}
 
 }
 
@@ -96,7 +111,8 @@ main {
 
   
   form {
-    border: solid orange 2px;
+    /* border: solid orange 2px; */
+    background: lightgray;
   }
   
   fieldset {
@@ -135,6 +151,27 @@ main {
       padding: 8px;
       /* border: solid orange 2px; */
       background-color: lightgrey;
+  }
+
+  div {
+      background-color: gray;
+      padding: 8px;
+  }
+
+
+  .navigation {
+      background-color: lightgrey;
+      width: 70%;
+      margin: auto;
+      border: solid gray 5px;
+      box-sizing: border-box;
+  }
+
+  .book-results{
+      border: 10px solid gray;
+      background-color: lightgray;
+      margin: auto;
+      padding: 10px;
   }
   
 
