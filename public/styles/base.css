@@ -8,22 +8,19 @@ body{
     flex-direction: column;
     font: black;
     font-family: 'Darker Grotesque', sans-serif;
-    border: solid green 2px;
-}
+ }
 
 h4{
     /* font-size: 3em; */
-    border: solid red 2px;
     height: 25px; 
     /* width: vmax; */
 }
 
 main {
-    border: solid pink 2px;
     background: gray; 
-    height: 700px; 
     width: 70%;
     margin: auto;
+    text-align: center;
   }
 
   
@@ -32,7 +29,6 @@ main {
   }
   
   fieldset {
-    border: solid yellow 2px;
     margin: 10px;
     padding: 5px; 
     background: lightgray;
@@ -41,13 +37,11 @@ main {
   }
 
   input {
-      border: solid purple 2px; 
       border-radius: 5px;
       height: 30px;
   }
 
   button {
-      border: solid 2px fuchsia;
       border-radius: 5px;
       font: white; 
       height: 25px; 
@@ -63,6 +57,13 @@ main {
 
   form > button {
       height: 35px;
+  }
+
+  .book{
+      margin: 8px;
+      padding: 8px;
+      /* border: solid orange 2px; */
+      background-color: lightgrey;
   }
   
 

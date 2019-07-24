@@ -3,15 +3,14 @@
 <head>
     <title>Book Collection</title>
     <link rel="stylesheet" href="/public/styles/base.css">
-    <!-- <link rel="stylesheet" href="/public/styles/icons.css"> -->
-    <link rel="stylesheet" href="/public/styles/layout.css">
-    <!-- <link rel="stylesheet" href="/public/styles/modules.css"> -->
     <link href="https://fonts.googleapis.com/css?family=Darker+Grotesque&display=swap" rel="stylesheet">
 </head>      
    <body>
         <main>
+         
           <a href = "/search">SEARCH BOOKS</a><br>
-            <% results.forEach(item => { %>
+            <% results.forEach(item => { %>  
+            <div class="book">
               <img src="<%= item.image_url %>"/>
             
               <p><%= item.title %></p>
@@ -19,7 +18,9 @@
               <p><%= item.author %></p>
              
               <p><%= item.description %></p>
+            </div>
               <% }) %>
+          
 
         </main>
       </body>
