@@ -1,0 +1,11 @@
+<% results.forEach(item => { %>  
+    <div class="book">
+      <img src="<%= item.image_url %>"/>
+    
+      <p><%= item.title %></p>
+    
+      <p><%= item.author %></p>
+     
+      <p><%= item.description %></p>
+    </div>
+      <% }) %>
