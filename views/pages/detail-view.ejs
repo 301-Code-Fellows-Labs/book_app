@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <%- include('../layout/head') %>
+</head>
+
+<body>
+  <header>
+    <%- include('../layout/header') %>
+  </header>
+  <main>
+    <section class="task-view container">
+      <ul id="task-list">
+        <%- include('../layout/listItem', {task: task}) %>
+      </ul>
+    </section>
+  </main>
+</body>
+
+</html>

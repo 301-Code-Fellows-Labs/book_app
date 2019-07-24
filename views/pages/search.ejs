@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+        <head>
+                <%- include('../layout/head') %>
+              </head>
+              
+              <body>
+                <header>
+                  <%- include('../layout/header') %>
+                </header>
+              
 
-    <title>DSearch books</title>
+    <title>Search books</title>
     <h4>Search by Title or Author</h4>
     <form action="/searches" method="post">
       <input type="text" name="search" placeholder="Enter a title or author" required>
