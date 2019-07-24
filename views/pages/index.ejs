@@ -11,9 +11,17 @@
     </header>
   
         <main>
-            <%- include('../layout/bookdiv') %>
-
-
+            <% results.forEach(item => { %>  
+              <div class="book-results">
+                  <img src="<%= item.image_url %>"/>
+                
+                  <p><%= item.title %></p>
+                
+                  <p><%= item.author %></p>
+                 
+                  <p><%= item.description %></p>
+              </div>
+              <% }) %>
         </main>
       </body>
 </html>
