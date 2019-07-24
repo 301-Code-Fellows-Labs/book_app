@@ -53,7 +53,7 @@ function Book(info) {
 }
 // Note that .ejs file extension is not required
 function newSearch(request, response) {
-  response.render('pages/index'); //looks in view folder for pages/index
+  response.render('pages/search'); //looks in view folder for pages/search
 }
 
 // No API key required
