@@ -21,7 +21,8 @@ app.set('view engine', 'ejs'); // setting ejs as view engin for express app
 // Renders the search form
 
 app.get('/search', newSearch);
-app.get('/', getBooks);
+app.get('/', getBooks); //books from DB
+app.get('/books/:book_id', getOneBook);
 
 
 // Creates a new search to the Google Books API
@@ -43,6 +44,17 @@ function getBooks(request, response) {
     .catch(err => response.status(500).render('pages/error'), {err: 'oops'}); 
 }
 
+function getOneBook(request, response) {
+  let SQL = 'SELECT * FROM books WHERE id=$1;';
+  let values = [request.params.book_id];
+
+  return client.query(SQL, values)
+    .then(result => {
+      // console.log('single', result.rows[0]);
+      return response.render('pages/detail-view', { task: result.rows[0] });
+    })
+    .catch(err => response.status(500).render('pages/error'), {err: 'oops'}); 
+}
 
 function Book(info) {
   const placeholderImage = 'https://i.imgur.com/J5LVHEL.jpg';
