@@ -1,4 +1,75 @@
-@media only screen and (max-width: 550px) and (max-width: 551px) {
+@media only screen and (max-width: 550px){
+    /* for mobile view */
+    
+
+body{
+    background-color: black;
+    display: flex; 
+    flex-direction: column;
+    font: black;
+    font-family: 'Darker Grotesque', sans-serif;
+ }
+
+h4{
+    /* font-size: 3em; */
+    height: 25px; 
+    /* width: vmax; */
+}
+
+main {
+    background: gray; 
+    width: 70%;
+    margin: auto;
+    text-align: center;
+  }
+
+  
+  form {
+    border: solid orange 2px;
+  }
+  
+  fieldset {
+    margin: 10px;
+    padding: 5px; 
+    background: lightgray;
+    border-radius: 5px; 
+    height: 25px;
+  }
+
+  input {
+      border-radius: 5px;
+      height: 30px;
+  }
+
+  button {
+      border-radius: 5px;
+      font: white; 
+      height: 25px; 
+  }
+
+  header {
+      background-color: black;
+  }
+
+  footer{
+      background-color: black;
+  }
+
+  form > button {
+      height: 35px;
+  }
+
+  .book{
+      margin: 8px;
+      padding: 8px;
+      /* border: solid orange 2px; */
+      background-color: lightgrey;
+  }
+  
+
+}
+
+@media only screen and (min-width: 551px){
     /* for mobile view */
     
 
