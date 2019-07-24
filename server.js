@@ -51,5 +51,8 @@ function createSearch(request, response) {
   superagent.get(url)
     .then(apiResponse => apiResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
     .then(results => response.render('pages/searches/show', { searchResults: results }))
-    .catch(err => response.status(500).render('pages/error'), {err: 'oops'});
+    .catch(err => handleError(err, response));
+}
+function handleError(error, response) {
+  response.render('pages/error', { error: error });
 }
