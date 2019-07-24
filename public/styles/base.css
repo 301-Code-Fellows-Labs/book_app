@@ -1,69 +1,69 @@
-@media only screen and (max-width: 550px) {
-    /* for mobile view */
-    
+ /* mobile first  */
 
 body{
-    background-color: black;
+    background-color: rgb(36, 1, 1);
     display: flex; 
     flex-direction: column;
-    font: black;
     font-family: 'Darker Grotesque', sans-serif;
-    border: solid green 2px;
-}
+ }
 
-h4{
-    /* font-size: 3em; */
-    border: solid red 2px;
-    height: 25px; 
-    /* width: vmax; */
-}
 
 main {
-    border: solid pink 2px;
     background: gray; 
-    height: 700px; 
     width: 70%;
     margin: auto;
+    text-align: center;
   }
+ h1, h2 {
+     color: white;
+ }
+ 
 
-  
-  form {
-    border: solid orange 2px;
-  }
-  
   fieldset {
-    border: solid yellow 2px;
-    margin: 10px;
-    padding: 5px; 
-    background: lightgray;
+    border: none; 
+    display: inline-block;
+  } 
+
+.input {
+    background: white;
     border-radius: 5px; 
+    width: 60%;
     height: 25px;
   }
 
-  input {
-      border: solid purple 2px; 
-      border-radius: 5px;
-      height: 30px;
+form > button {
+    border-radius: 5px;
+    background: black;
+    color: white; 
+    width: 70%;
+    height: 25px;
+    margin: 1em;
   }
 
-  button {
-      border: solid 2px fuchsia;
-      border-radius: 5px;
-      font: white; 
-      height: 25px; 
-  }
 
-  header {
-      background-color: black;
-  }
+  .book-results{
+    border: 10px solid gray;
+    background-color: lightgray;
+    margin: auto;
+    padding: 10px;
+}
+  .navigation {
+    background-color: lightgrey;
+    width: 70%;
+    margin: auto;
+    border: solid gray 5px;
+    box-sizing: border-box;
+}
 
-  footer{
-      background-color: black;
-  }
 
-  form > button {
-      height: 35px;
-  }
-  
+
+ /* deskctop view  */
+
+@media only screen and (min-width: 551px){
+ 
+/* !!!!!PLACEHOLDER!!!! */
+body {
+    background-color: rgb(36, 1, 1);
+ }
 
 }

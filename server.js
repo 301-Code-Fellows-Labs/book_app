@@ -1,8 +1,15 @@
 'use strict';
 
 const express = require('express');
+const pg = require('pg');
 const superagent = require('superagent');
 const app = express();
+
+// Environment variables
+require('dotenv').config();
+
+const client = new pg.Client(process.env.DATABASE_URL);
+client.connect();
 
 const PORT = process.env.PORT || 3000;
 
@@ -12,7 +19,10 @@ app.set('view engine', 'ejs'); // setting ejs as view engin for express app
 
 // API Routes
 // Renders the search form
-app.get('/', newSearch);
+
+app.get('/search', newSearch);
+app.get('/', getBooks); //books from DB
+app.get('/books/:book_id', getOneBook);
 
 
 // Creates a new search to the Google Books API
@@ -24,7 +34,28 @@ app.get('*', (request, response) => response.status(404).send('This route does n
 
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 
+
 // HELPER FUNCTIONS
+function getBooks(request, response) {
+  let SQL = 'SELECT * from books;';
+
+  return client.query(SQL)
+    .then(results => response.render('pages/index', { results: results.rows }))
+    .catch(err => response.status(500).render('pages/error'), {err: 'oops'}); 
+}
+
+function getOneBook(request, response) {
+  let SQL = 'SELECT * FROM books WHERE id=$1;';
+  let values = [request.params.book_id];
+
+  return client.query(SQL, values)
+    .then(result => {
+      // console.log('single', result.rows[0]);
+      return response.render('pages/detail-view', { task: result.rows[0] });
+    })
+    .catch(err => response.status(500).render('pages/error'), {err: 'oops'}); 
+}
+
 function Book(info) {
   const placeholderImage = 'https://i.imgur.com/J5LVHEL.jpg';
   this.title = info.title ? info.title : 'no title';
@@ -34,7 +65,7 @@ function Book(info) {
 }
 // Note that .ejs file extension is not required
 function newSearch(request, response) {
-  response.render('pages/index'); //looks in view folder for pages/index
+  response.render('pages/search'); //looks in view folder for pages/search
 }
 
 // No API key required
@@ -53,3 +84,4 @@ function createSearch(request, response) {
     .then(results => response.render('pages/searches/show', { searchResults: results }))
     .catch(err => response.status(500).render('pages/error'), {err: 'oops'});
 }
+
