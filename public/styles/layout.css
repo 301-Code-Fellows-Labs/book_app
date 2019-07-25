@@ -1,0 +1,35 @@
+ /* mobile first  */
+ @viewport {
+    width: device-width;
+    zoom: 1;
+}
+
+  /* .flex-container-row {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+  } 
+  .flex-container-column {
+    display: flex;
+    flex-direction: column;
+    flex: 0;
+    align-content: center;
+  } */
+
+ body{
+    background-color: rgb(36, 1, 1);
+    display: flex; 
+    flex-direction: column;
+    font-family: 'Darker Grotesque', sans-serif;
+ }
+
+  /* deskctop view  */
+
+@media only screen and (min-width: 551px){
+ 
+    /* !!!!!PLACEHOLDER!!!! */
+    body {
+        background-color: rgb(36, 1, 1);
+     }
+    
+    }
