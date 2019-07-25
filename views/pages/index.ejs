@@ -11,12 +11,10 @@
     </header>
   
         <main>
-            <h4>Saved Books</h4>
-            <p><%= books.length %> books in the Collection</p>
+            <h2>There're  <%= books.length %> Saved Books in the Collection</h2>
             <% books.forEach(book => { %>  
-              <div class="book-results" data-book-id="<%= book.id %>">
-                  <%- include('books/detail', {book: book}) %>
-                  <p class="detail-button"><a href="../books/<%= book.id %>">View Details</a></p>
+              <div data-book-id="<%= book.id %>">
+                  <%- include('books/detail_short', {book: book}) %>
               </div>
               <% }) %>
         </main>
