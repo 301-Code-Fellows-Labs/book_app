@@ -14,6 +14,7 @@
   <form action="<%= `/books/${book.id}` %>" method="POST">
    <input type="hidden" name="_method" value="put">
    <span>Update bookshelf</span> <input class="input" type="text" name="bookshelf" value = "<%= book.bookshelf %>"/>
-  <button type="submit">Submit</button>
+  <button class= "button_link" type="submit">Submit</button>
+  <button><a class="button_link" href="#">Remove From My Collection</a></button>
   </form>
 </section>
