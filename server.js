@@ -1,61 +1,48 @@
 'use strict';
 
+// Application Dependencies
 const express = require('express');
 const pg = require('pg');
 const superagent = require('superagent');
 const app = express();
+const methodOverride = require('method-override');
 
 // Environment variables
 require('dotenv').config();
-
-const client = new pg.Client(process.env.DATABASE_URL);
-client.connect();
-
 const PORT = process.env.PORT || 3000;
 
+// Database Setup
+const client = new pg.Client(process.env.DATABASE_URL);
+client.connect();
+client.on('error', err => console.error(err));
+
+// Application Middleware
 app.use(express.urlencoded({ extended: true })); // default clientused to send html forms
 app.use('/public', express.static('public')); // route to public folder with static files
-app.set('view engine', 'ejs'); // setting ejs as view engin for express app
+// Set the view engine for server-side templating
+app.set('view engine', 'ejs');
+
+app.use(methodOverride((request, response) => {
+  if (request.body && typeof request.body === 'object' && '_method' in request.body) {
+    console.log('hitting put route', request.body._method);
+    let method = request.body._method;
+    delete request.body._method;
+    return method;
+  }
+}));
 
 // API Routes
-// Renders the search form
-
-app.get('/search', newSearch);
 app.get('/', getBooks); //books from DB
+app.get('/search', newSearch);
+app.post('/searches', createSearch); // Creates a new search to the Google Books API
+app.post('/books', createBook);
 app.get('/books/:book_id', getOneBook);
-
-
-// Creates a new search to the Google Books API
-app.post('/searches', createSearch);
-
-
-// Catch-all
+app.put('/books/:book_id', updateBook);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 
-
 // HELPER FUNCTIONS
-function getBooks(request, response) {
-  let SQL = 'SELECT * from books;';
-
-  return client.query(SQL)
-    .then(results => response.render('pages/index', { results: results.rows }))
-    .catch(err => response.status(500).render('pages/error'), {err: 'oops'}); 
-}
-
-function getOneBook(request, response) {
-  let SQL = 'SELECT * FROM books WHERE id=$1;';
-  let values = [request.params.book_id];
-
-  return client.query(SQL, values)
-    .then(result => {
-      // console.log('single', result.rows[0]);
-      return response.render('pages/detail-view', { task: result.rows[0] });
-    })
-    .catch(err => response.status(500).render('pages/error'), {err: 'oops'}); 
-}
-
 function Book(info) {
   const placeholderImage = 'https://i.imgur.com/J5LVHEL.jpg';
   this.title = info.title ? info.title : 'no title';
@@ -63,9 +50,52 @@ function Book(info) {
   this.description = info.description ? info.description : 'no description';
   this.image = info.imageLinks ? info.imageLinks.smallThumbnail : placeholderImage;
 }
-// Note that .ejs file extension is not required
+
+function getBooks(request, response) {
+  let SQL = 'SELECT * from books;';
+
+  return client.query(SQL)
+    .then(results => {
+      if (results.rows.rowCount === 0) {
+        response.render('pages/searches/search');
+      } else {
+        response.render('pages/index', { books: results.rows })
+      }
+    })
+    .catch(err => response.status(500).render('pages/error'), {err: 'oops'}); 
+}
+
+function createBook(request, response) {
+  let normalizedShelf = request.body.bookshelf.toLowerCase();
+
+  let { title, author, isbn, image_url, description } = request.body;
+  let SQL = 'INSERT INTO books(title, author, isbn, image_url, description, bookshelf) VALUES($1, $2, $3, $4, $5, $6);';
+  let values = [title, author, isbn, image_url, description, normalizedShelf];
+
+  return client.query(SQL, values)
+    .then(() => {
+      SQL = 'SELECT * FROM books WHERE isbn=$1;';
+      values = [request.body.isbn];
+      return client.query(SQL, values)
+        .then(result => response.redirect(`/books/${result.rows[0].id}`))
+        .catch(err => response.status(500).render('pages/error'), {err: 'oops'}); 
+    })
+    .catch(err => response.status(500).render('pages/error'), {err: 'oops'}); 
+}
+
+function getOneBook(request, response) {
+  let SQL = `SELECT * from books WHERE id=${request.params.book_id};`;
+  return client.query(SQL)
+    .then(result => {
+      console.log(result);
+      response.render('pages/books/show', { book: result.rows[0]})
+    })
+    .catch(err => response.status(500).render('pages/error'), {err: 'oops'});
+}
+
+
 function newSearch(request, response) {
-  response.render('pages/search'); //looks in view folder for pages/search
+  response.render('pages/searches/search'); //looks in view folder for pages/search
 }
 
 // No API key required
@@ -85,3 +115,12 @@ function createSearch(request, response) {
     .catch(err => response.status(500).render('pages/error'), {err: 'oops'});
 }
 
+function updateBook(request, response) {
+  let { author, title, description, bookshelf} = request.body;
+  let SQL = `UPDATE books SET author=$1, title=$2, description=$3, bookshelf=$4 WHERE id=$5;`;
+  let values = [author, title, description, bookshelf, request.params.book_id];
+
+  return client.query(SQL, values)
+    .then(()=>response.redirect('/'))
+    .catch(error => response.send(error));
+}

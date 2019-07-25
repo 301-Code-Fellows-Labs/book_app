@@ -11,15 +11,12 @@
     </header>
   
         <main>
-            <% results.forEach(item => { %>  
-              <div class="book-results">
-                  <img src="<%= item.image_url %>"/>
-                
-                  <h2><%= item.title %></h2>
-                
-                  <p><%= item.author %></p>
-                 
-                  <p><%= item.description %></p>
+            <h4>Saved Books</h4>
+            <p><%= books.length %> books in the Collection</p>
+            <% books.forEach(book => { %>  
+              <div class="book-results" data-book-id="<%= book.id %>">
+                  <%- include('books/detail', {book: book}) %>
+                  <p class="detail-button"><a href="../books/<%= book.id %>">View Details</a></p>
               </div>
               <% }) %>
         </main>
