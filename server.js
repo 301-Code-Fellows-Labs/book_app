@@ -116,7 +116,7 @@ function createSearch(request, response) {
 }
 
 function updateBook(request, response) {
-  let bookshelf = request.body;
+  let bookshelf = request.body.bookshelf;
   let SQL = `UPDATE books SET bookshelf=$1 WHERE id=$2;`;
   let values = [bookshelf, request.params.book_id];
 
