@@ -17,4 +17,13 @@
       <%= book.bookshelf %>
     <% } %>
   </p>
+  <form action="<%= `/books/${book.id}` %>" method="POST">
+   <input type="hidden" name="_method" value="put">
+   <span>author</span> <input type="text" name="author" value = "<%= book.author %>" />
+   <span>title</span> <input type="text" name="title" value = "<%= book.title %>"/>
+   <span>description</span> <input type="textarea" name="description" value = "<%= book.description %>" />
+   <span>bookshelf</span> <input type="text" name="bookshelf" value = "<%= book.bookshelf %>"/>
+    <button type="submit">Submit</button>
+  </form>
+
 </section>

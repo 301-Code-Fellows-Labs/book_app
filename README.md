@@ -12,6 +12,7 @@ You'd need install npm, psql, express, ejs and superagent to run this app locall
 ```npm init```
 ```npm install --save express dotenv superagent ejs```
 ```npm install --save pg```
+```npm install --save method-override```
 
 ## Architecture
 App build with Java Script, Node, Express, Postgres and Google Books API
@@ -22,7 +23,7 @@ App build with Java Script, Node, Express, Postgres and Google Books API
 
 07-24-2019 2:00pm - Application now has a DataBase and showing saved information
 
-07-25-2019 2:00pm - 
+07-25-2019 2:00pm - Application now has Update functionality
 
 07-26-2019 2:00pm - 
 

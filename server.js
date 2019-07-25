@@ -5,6 +5,7 @@ const express = require('express');
 const pg = require('pg');
 const superagent = require('superagent');
 const app = express();
+const methodOverride = require('method-override');
 
 // Environment variables
 require('dotenv').config();
@@ -21,17 +22,25 @@ app.use('/public', express.static('public')); // route to public folder with sta
 // Set the view engine for server-side templating
 app.set('view engine', 'ejs');
 
+app.use(methodOverride((request, response) => {
+  if (request.body && typeof request.body === 'object' && '_method' in request.body) {
+    console.log('hitting put route', request.body._method);
+    let method = request.body._method;
+    delete request.body._method;
+    return method;
+  }
+}));
+
 // API Routes
 app.get('/', getBooks); //books from DB
 app.get('/search', newSearch);
 app.post('/searches', createSearch); // Creates a new search to the Google Books API
 app.post('/books', createBook);
 app.get('/books/:book_id', getOneBook);
-
+app.put('/books/:book_id', updateBook);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
-
 
 // HELPER FUNCTIONS
 function Book(info) {
@@ -48,7 +57,7 @@ function getBooks(request, response) {
   return client.query(SQL)
     .then(results => {
       if (results.rows.rowCount === 0) {
-        response.render('pages/search');
+        response.render('pages/searches/search');
       } else {
         response.render('pages/index', { books: results.rows })
       }
@@ -86,7 +95,7 @@ function getOneBook(request, response) {
 
 
 function newSearch(request, response) {
-  response.render('pages/search'); //looks in view folder for pages/search
+  response.render('pages/searches/search'); //looks in view folder for pages/search
 }
 
 // No API key required
@@ -106,3 +115,12 @@ function createSearch(request, response) {
     .catch(err => response.status(500).render('pages/error'), {err: 'oops'});
 }
 
+function updateBook(request, response) {
+  let { author, title, description, bookshelf} = request.body;
+  let SQL = `UPDATE books SET author=$1, title=$2, description=$3, bookshelf=$4 WHERE id=$5;`;
+  let values = [author, title, description, bookshelf, request.params.book_id];
+
+  return client.query(SQL, values)
+    .then(()=>response.redirect('/'))
+    .catch(error => response.send(error));
+}
