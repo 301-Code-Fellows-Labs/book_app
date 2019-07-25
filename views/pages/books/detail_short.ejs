@@ -1,0 +1,11 @@
+<section class="book-results">
+    <img src="<%= book.image_url %>">
+    <h3> <%= book.title %><% if (book.subtitle) { %>: <%= book.subtitle %> <% } %> </h3>
+    <span> <%= book.author %></span>
+    <% if ( book.bookshelf) { %>
+        &mdash;
+        Bookshelf:
+        <%= book.bookshelf %>
+      <% } %>
+      <p class="detail-button"><a class="detail-button" href="../books/<%= book.id %>">View Details</a></p>
+</section>

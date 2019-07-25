@@ -116,9 +116,9 @@ function createSearch(request, response) {
 }
 
 function updateBook(request, response) {
-  let { author, title, description, bookshelf} = request.body;
-  let SQL = `UPDATE books SET author=$1, title=$2, description=$3, bookshelf=$4 WHERE id=$5;`;
-  let values = [author, title, description, bookshelf, request.params.book_id];
+  let bookshelf = request.body;
+  let SQL = `UPDATE books SET bookshelf=$1 WHERE id=$2;`;
+  let values = [bookshelf, request.params.book_id];
 
   return client.query(SQL, values)
     .then(()=>response.redirect('/'))

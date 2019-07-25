@@ -23,7 +23,6 @@ form > button {
       height: 3em;
       margin: 1em;
   }
-
   span {
       font-size: 1.5em;
       display: inline-block;
@@ -38,8 +37,15 @@ form > button {
     margin: auto;
     padding: 10px;
 }
-
-
+  .detail-button {
+    color: black;
+    text-align: inherit;
+  }
+  .detail-button:hover
+  {
+    color: yellow;
+    text-align: inherit;
+  }
 
 @media only screen and (min-width: 551px){
 .input {
