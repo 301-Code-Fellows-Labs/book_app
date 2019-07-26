@@ -13,6 +13,9 @@ main {
     margin: 0.5em;
     text-decoration: none;
   }
+  a:hover {
+    color: yellow;
+  }
 
  h1 {
      color: white;
