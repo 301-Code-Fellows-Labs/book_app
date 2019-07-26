@@ -24,7 +24,6 @@ app.set('view engine', 'ejs');
 
 app.use(methodOverride((request, response) => {
   if (request.body && typeof request.body === 'object' && '_method' in request.body) {
-    console.log('hitting put route', request.body._method);
     let method = request.body._method;
     delete request.body._method;
     return method;
@@ -38,6 +37,7 @@ app.post('/searches', createSearch); // Creates a new search to the Google Books
 app.post('/books', createBook);
 app.get('/books/:book_id', getOneBook);
 app.put('/books/:book_id', updateBook);
+app.delete('/books/:id', deleteBook);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
@@ -46,7 +46,8 @@ app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 function Book(info) {
   const placeholderImage = 'https://i.imgur.com/J5LVHEL.jpg';
   this.title = info.title ? info.title : 'no title';
-  this.authors = info.authors ? info.authors : 'no author';
+  this.author = info.authors ? info.authors[0] : 'No author available';
+  this.isbn = info.industryIdentifiers ? `ISBN_13 ${info.industryIdentifiers[0].identifier}` : 'No ISBN available';
   this.description = info.description ? info.description : 'no description';
   this.image = info.imageLinks ? info.imageLinks.smallThumbnail : placeholderImage;
 }
@@ -62,35 +63,17 @@ function getBooks(request, response) {
         response.render('pages/index', { books: results.rows })
       }
     })
-    .catch(err => response.status(500).render('pages/error'), {err: 'oops'}); 
+    .catch(() => response.status(500).render('pages/error'), {err: 'oops'}); 
 }
 
-function createBook(request, response) {
-  let normalizedShelf = request.body.bookshelf.toLowerCase();
-
-  let { title, author, isbn, image_url, description } = request.body;
-  let SQL = 'INSERT INTO books(title, author, isbn, image_url, description, bookshelf) VALUES($1, $2, $3, $4, $5, $6);';
-  let values = [title, author, isbn, image_url, description, normalizedShelf];
-
-  return client.query(SQL, values)
-    .then(() => {
-      SQL = 'SELECT * FROM books WHERE isbn=$1;';
-      values = [request.body.isbn];
-      return client.query(SQL, values)
-        .then(result => response.redirect(`/books/${result.rows[0].id}`))
-        .catch(err => response.status(500).render('pages/error'), {err: 'oops'}); 
-    })
-    .catch(err => response.status(500).render('pages/error'), {err: 'oops'}); 
-}
 
 function getOneBook(request, response) {
   let SQL = `SELECT * from books WHERE id=${request.params.book_id};`;
   return client.query(SQL)
     .then(result => {
-      console.log(result);
       response.render('pages/books/show', { book: result.rows[0]})
     })
-    .catch(err => response.status(500).render('pages/error'), {err: 'oops'});
+    .catch(() => response.status(500).render('pages/error'), {err: 'oops'});
 }
 
 
@@ -98,13 +81,8 @@ function newSearch(request, response) {
   response.render('pages/searches/search'); //looks in view folder for pages/search
 }
 
-// No API key required
-// Console.log request.body and request.body.search
 function createSearch(request, response) {
   let url = 'https://www.googleapis.com/books/v1/volumes?q=';
-
-  console.log(request.body);
-  console.log(request.body.search);
 
   if (request.body.search[1] === 'title') { url += `+intitle:${request.body.search[0]}`; }
   if (request.body.search[1] === 'author') { url += `+inauthor:${request.body.search[0]}`; }
@@ -112,7 +90,26 @@ function createSearch(request, response) {
   superagent.get(url)
     .then(apiResponse => apiResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
     .then(results => response.render('pages/searches/show', { searchResults: results }))
-    .catch(err => response.status(500).render('pages/error'), {err: 'oops'});
+    .catch(() => response.status(500).render('pages/error'), {err: 'oops'});
+}
+
+function createBook(request, response) {
+  let { title, author, isbn, image_url, description, bookshelf} = request.body;
+  let SQL = 'INSERT INTO books(title, author, isbn, image_url, description, bookshelf) VALUES($1, $2, $3, $4, $5, $6);';
+  let values = [title, author, isbn, image_url, description, bookshelf];
+
+  return client.query(SQL, values)
+    .then(response.redirect('/'))
+    .catch(() => response.status(500).render('pages/error'), {err: 'oops'});
+}
+
+function deleteBook(request, response) {
+  let SQL = 'DELETE FROM books WHERE id=$1;';
+  let values = [request.params.id];
+
+  return client.query(SQL, values)
+    .then(response.redirect('/'))
+    .catch(() => response.status(500).render('pages/error'), {err: 'oops'});
 }
 
 function updateBook(request, response) {

@@ -19,11 +19,21 @@
       <p><%= item.author %></p>
     
       <p><%= item.description %></p>
-      <button><a class="button_link" href="#">Add To My Collection</a></button>
+      
+      <form action="/books/<%= item.id %>" method="post">
+        <input type="hidden" name="_method" value="create">
+        <input type="hidden" name="isbn"  value = "<%= item.isbn %>" >
+        <input type="hidden" name="image_url"  value = "<%= item.image %>">
+        <input type="hidden" name="title"  value = "<%= item.title %>">
+        <input type="hidden" name="author"  value = "<%= item.author %>">
+        <input type="hidden" name="description"  value = "<%= item.description %>">
+
+        <span>Add bookshelf</span> <input class="input" type="text" name="bookshelf" value = "<%= item.bookshelf %>" required/>
+      <button class="button_link">Add "<%= item.title %>" To My Collection</button>
+      </form>
     </div>
       <% }) %>
 
 </main>
 </body>
-
 </html>

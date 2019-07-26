@@ -13,8 +13,12 @@
   </p>
   <form action="<%= `/books/${book.id}` %>" method="POST">
    <input type="hidden" name="_method" value="put">
-   <span>Update bookshelf</span> <input class="input" type="text" name="bookshelf" value = "<%= book.bookshelf %>"/>
-  <button class= "button_link" type="submit">Submit</button>
-  <button><a class="button_link" href="#">Remove From My Collection</a></button>
+   <span>Update bookshelf</span> <input class="input" type="text" name="bookshelf" value = "<%= book.bookshelf %>" required/>
+  <button class= "button_link" type="submit">Update Bookshelf</button>
+   </form>
+
+  <form class="unlist" action="/books/<%= book.id %>" method="post">
+    <input type="hidden" name="_method" value="delete">
+  <button class="button_link">Remove "<%= book.title %>" From My Collection</button>
   </form>
 </section>
